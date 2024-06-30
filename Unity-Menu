@@ -1,0 +1,66 @@
+#function to install google chrome
+install_google_chrome() {
+     cd bin
+     sudo chmod 755 google-chrome.sh
+     sudo bash google-chrome.sh
+     exit 0
+}
+
+# function to install tor browser
+install_tor_browser() {
+    cd bin
+    sudo chmod 755 tor-browser.sh
+    sudo bash tor-browser.sh
+    exit 0
+}
+
+# function to install vnc connect
+install_vnc_connect() {
+    cd bin
+    sudo chmod 755 vnc-connect.sh
+    sudo bash vnc-connect.sh
+    exit 0
+}
+
+# function to install vscode
+install_vscode() {
+   cd bin
+   sudo chmod 755 vscode.sh
+   sudo bash vscode.sh
+   exit 0
+}
+
+
+
+
+
+# Function to display menu
+display_menu() {
+    print_message $BLUE "||==========Unity Installer==========||"
+    print_message $YELLOW "  Which would you like to install?"
+    print_message $YELLOW "1. Google Chrome"
+    print_message $YELLOW "2. Tor Browser"
+    print_message $YELLOW "3. VNC Connect/Viewer"
+    print_message $YELLOW "4. VS Code"
+    print_message $YELLOW "5. Git"
+    print_message $YELLOW "6. Docker"
+    print_message $YELLOW "7. Zoom"
+    print_message $YELLOW "8. All"
+    print_message $YELLOW "9. Exit :( "
+    print_message $BLUE "======================================"
+    read -p "Enter your choice: " choice
+    case $choice in
+        1) install_google_chrome ;;
+        2) install_tor_browser ;;
+        3) install_vnc_connect ;;
+        4) install_vscode ;;
+        5) install_git ;;
+        6) install_docker ;;
+        7) install_zoom ;;
+        8) install_google_chrome install_only; install_tor_browser install_only; install_vnc>
+        9) exit 0 ;;
+        *) echo "Invalid choice, please select a valid option"
+           display_menu ;;
+    esac
+}
+
