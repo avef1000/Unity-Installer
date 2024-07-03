@@ -1,66 +1,158 @@
-#function to install google chrome
+#!/bin/bash
+
+# Function to install Google Chrome
 install_google_chrome() {
-     cd bin
-     sudo chmod 755 google-chrome.sh
-     sudo bash google-chrome.sh
-     exit 0
+    cd bin
+    sudo chmod 755 google-chrome.sh
+    sudo bash google-chrome.sh
+    cd ..
+    
+    if [[ $1 == "install_only" ]]; then
+        exit 0
+    else
+        display_menu
+    fi
 }
 
-# function to install tor browser
+# Function to install Tor Browser
 install_tor_browser() {
     cd bin
     sudo chmod 755 tor-browser.sh
     sudo bash tor-browser.sh
-    exit 0
+    cd ..
+    if [[ $1 == "install_only" ]]; then
+        exit 0
+    else
+        display_menu
+    fi
 }
 
-# function to install vnc connect
+# Function to install VNC Connect/Viewer
 install_vnc_connect() {
     cd bin
     sudo chmod 755 vnc-connect.sh
     sudo bash vnc-connect.sh
-    exit 0
+    cd ..
+    if [[ $1 == "install_only" ]]; then
+        exit 0
+    else
+        display_menu
+    fi
 }
 
-# function to install vscode
+# Function to install VS Code
 install_vscode() {
    cd bin
    sudo chmod 755 vscode.sh
    sudo bash vscode.sh
-   exit 0
+   cd ..
+   if [[ $1 == "install_only" ]]; then
+       exit 0
+   else
+       display_menu
+   fi
 }
 
+# Function to install Git
+install_git() {
+   cd bin
+   sudo chmod 755 git.sh
+   sudo bash git.sh
+   cd ..
+   if [[ $1 == "install_only" ]]; then
+       exit 0
+   else
+       display_menu
+   fi
+}
 
+# Function to install Docker
+install_docker() {
+   cd bin
+   sudo chmod 755 docker.sh
+   sudo bash docker.sh
+   cd ..
+   if [[ $1 == "install_only" ]]; then
+       exit 0
+   else
+       display_menu
+   fi
+}
 
+# Function to install Zoom
+install_zoom() {
+   cd bin
+   sudo chmod 755 zoom.sh
+   sudo bash zoom.sh
+   cd ..
+   if [[ $1 == "install_only" ]]; then
+       exit 0
+   else
+       display_menu
+   fi
+}
 
+# Function to process comma-separated list of choices
+process_choices() {
+    local choices=$1
+    IFS=',' read -ra choice_list <<< "$choices"
+
+    for choice in "${choice_list[@]}"; do
+        case $choice in 
+            1) install_google_chrome install_only ;;
+            2) install_tor_browser install_only ;;
+            3) install_vnc_connect install_only ;;
+            4) install_vscode install_only ;;
+            5) install_git install_only ;;
+            6) install_docker install_only ;;
+            7) install_zoom install_only ;;
+            # Add more cases as needed for other software options
+            *) echo "Invalid choice: $choice"
+               continue ;;
+        esac
+    done
+
+    display_menu  # Return to the main menu after processing all choices
+}
 
 # Function to display menu
 display_menu() {
-    print_message $BLUE "||==========Unity Installer==========||"
-    print_message $YELLOW "  Which would you like to install?"
-    print_message $YELLOW "1. Google Chrome"
-    print_message $YELLOW "2. Tor Browser"
-    print_message $YELLOW "3. VNC Connect/Viewer"
-    print_message $YELLOW "4. VS Code"
-    print_message $YELLOW "5. Git"
-    print_message $YELLOW "6. Docker"
-    print_message $YELLOW "7. Zoom"
-    print_message $YELLOW "8. All"
-    print_message $YELLOW "9. Exit :( "
-    print_message $BLUE "======================================"
+    BLUE='\033[0;34m'
+    YELLOW='\033[1;33m'
+    NC='\033[0m' # No Color
+    
+    echo -e "${BLUE}======================================"
+    echo "||========== Unity Installer =========||"
+    echo "||----------------------------------||"
+    echo -e "|| ${YELLOW}  Which would you like to install?${BLUE}    ||"
+    echo "||----------------------------------||"
+    echo -e "|| ${YELLOW}  ${bold}1. Google Chrome${NC}${YELLOW}                  ||"
+    echo -e "|| ${YELLOW}  ${bold}2. Tor Browser${NC}${YELLOW}                    ||"
+    echo -e "|| ${YELLOW}  ${bold}3. VNC Connect/Viewer${NC}${YELLOW}             ||"
+    echo -e "|| ${YELLOW}  ${bold}4. VS Code${NC}${YELLOW}                        ||"
+    echo -e "|| ${YELLOW}  ${bold}5. Git${NC}${YELLOW}                            ||"
+    echo -e "|| ${YELLOW}  ${bold}6. Docker${NC}${YELLOW}                         ||"
+    echo -e "|| ${YELLOW}  ${bold}7. Zoom${NC}${YELLOW}                           ||"
+    echo -e "|| ${YELLOW}  ${bold}8. All${NC}${YELLOW}                            ||"
+    echo -e "|| ${YELLOW}  ${bold}9. Exit :( ${NC}${YELLOW}                        ||"
+    echo -e "${BLUE}======================================${NC}"
+    
     read -p "Enter your choice: " choice
     case $choice in
-        1) install_google_chrome ;;
-        2) install_tor_browser ;;
-        3) install_vnc_connect ;;
-        4) install_vscode ;;
-        5) install_git ;;
-        6) install_docker ;;
-        7) install_zoom ;;
-        8) install_google_chrome install_only; install_tor_browser install_only; install_vnc>
-        9) exit 0 ;;
-        *) echo "Invalid choice, please select a valid option"
-           display_menu ;;
+        1|2|3|4|5|6|7) 
+            process_choices "$choice"
+            ;;
+        8)
+            process_choices "1,2,3,4,5,6,7"
+            ;;
+        9) 
+            echo "Exiting..."
+            exit 0 ;;
+        *) 
+            echo "Invalid choice, please select a valid option"
+            display_menu ;;
     esac
 }
 
+# Start the script by displaying the menu
+display_menu
